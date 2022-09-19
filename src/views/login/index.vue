@@ -9,7 +9,7 @@
       label-position="left"
     >
       <div class="title-container">
-        <h3 class="title">个人博客系统后台</h3>
+        <h3 class="title">威斯霍克系统后台</h3>
       </div>
       <!-- 账号 -->
       <el-form-item prop="loginId">
@@ -19,7 +19,7 @@
         <el-input
           ref="loginId"
           v-model="loginForm.loginId"
-          placeholder="请输入管理员账号"
+          placeholder="请输入手机号(手机号位数为11位)"
           name="loginId"
           type="text"
           tabindex="1"
@@ -36,7 +36,7 @@
           ref="loginPwd"
           v-model="loginForm.loginPwd"
           :type="passwordType"
-          placeholder="请输入管理员密码"
+          placeholder="请输入管理员密码(密码必须大于6位)"
           name="loginPwd"
           tabindex="2"
           auto-complete="on"
@@ -49,7 +49,7 @@
         </span>
       </el-form-item>
       <!-- 验证码 -->
-      <div class="captchaContainer">
+      <!-- <div class="captchaContainer">
         <el-form-item prop="captcha" class="captchaInput">
           <span class="svg-container">
             <svg-icon icon-class="nested" />
@@ -66,11 +66,11 @@
           />
         </el-form-item>
         <div @click="handelCaptcha" class="captchaImg" v-html="svg"></div>
-      </div>
+      </div> -->
       <!-- 7天免登录 -->
-      <div style="margin-bottom: 15px">
+      <!-- <div style="margin-bottom: 15px">
         <el-checkbox v-model="loginForm.checked">7天内免登录</el-checkbox>
-      </div>
+      </div> -->
 
       <el-button
         :loading="loading"
@@ -84,15 +84,15 @@
 </template>
 
 <script>
-import { validUsername } from "@/utils/validate";
-import { getcaptcha } from "@/api/captcha";
+// import { validUsername } from "@/utils/validate";
+// import { getcaptcha } from "@/api/captcha";
 
 export default {
   name: "Login",
   data() {
     const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
-        callback(new Error("请输入管理员账号"));
+      if (value.length !== 11) {
+        callback(new Error("请输入手机号"));
       } else {
         callback();
       }
@@ -104,20 +104,20 @@ export default {
         callback();
       }
     };
-    const validateCaptcha = (rule, value, callback) => {
-      if (value.length <= 0) {
-        callback(new Error("请输入验证码"));
-      } else {
-        callback();
-      }
-    };
+    // const validateCaptcha = (rule, value, callback) => {
+    //   if (value.length <= 0) {
+    //     callback(new Error("请输入验证码"));
+    //   } else {
+    //     callback();
+    //   }
+    // };
     return {
-      svg: "",
+      // svg: "",
       loginForm: {
         loginId: "",
         loginPwd: "",
-        captcha: "",
-        checked: false,
+        // captcha: "",
+        // checked: false,
       },
       loginRules: {
         loginId: [
@@ -126,9 +126,9 @@ export default {
         loginPwd: [
           { required: true, trigger: "blur", validator: validatePassword },
         ],
-        captcha: [
-          { required: true, trigger: "blur", validator: validateCaptcha },
-        ],
+        // captcha: [
+        //   { required: true, trigger: "blur", validator: validateCaptcha },
+        // ],
       },
       loading: false,
       passwordType: "password",
@@ -137,20 +137,20 @@ export default {
   },
   watch: {
     $route: {
-      handler: function (route) {
+      handler(route) {
         this.redirect = route.query && route.query.redirect;
       },
       immediate: true,
     },
   },
-  created() {
-    // 获取svg验证码图片
-    this.handelCaptcha();
-  },
+  // created() {
+  //   // 获取svg验证码图片
+  //   this.handelCaptcha();
+  // },
   methods: {
-    async handelCaptcha() {
-      this.svg = await getcaptcha();
-    },
+    // async handelCaptcha() {
+    //   this.svg = await getcaptcha();
+    // },
     showPwd() {
       if (this.passwordType === "password") {
         this.passwordType = "";
@@ -165,6 +165,7 @@ export default {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
           this.loading = true;
+
           this.$store
             .dispatch("user/login", this.loginForm)
             .then(() => {
@@ -172,16 +173,12 @@ export default {
               this.loading = false;
             })
             .catch((rep) => {
-              if (typeof rep === "string") {
-                this.$message.error("验证码错误,请重新输入");
-              } else {
-                this.$message.error("账号或密码错误，请重新输入");
-              }
+              this.$message.error(rep.msg);
               // 重新获取验证码图片
-              this.handelCaptcha();
+              // this.handelCaptcha();
               this.loading = false;
               this.loginForm.loginPwd = "";
-              this.loginForm.captcha = "";
+              // this.loginForm.captcha = "";
             });
         } else {
           console.log("error submit!!");
@@ -258,16 +255,16 @@ $light_gray: #eee;
     padding: 160px 35px 0;
     margin: 0 auto;
     overflow: hidden;
-    .captchaContainer {
-      display: flex;
-      .captchaInput {
-        width: 70%;
-      }
-      .captchaImg {
-        flex: 1 1 auto;
-        cursor: pointer;
-      }
-    }
+    // .captchaContainer {
+    //   display: flex;
+    //   .captchaInput {
+    //     width: 70%;
+    //   }
+    //   .captchaImg {
+    //     flex: 1 1 auto;
+    //     cursor: pointer;
+    //   }
+    // }
   }
 
   .tips {

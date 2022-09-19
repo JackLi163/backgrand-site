@@ -14,20 +14,13 @@
             type="text"
             v-model="ruleForm.name"
             autocomplete="off"
+            :disabled="true"
           ></el-input>
         </el-form-item>
-        <el-form-item label="旧密码" prop="oldLoginPwd">
+        <el-form-item label="新密码" prop="password">
           <el-input
             type="password"
-            v-model="ruleForm.oldLoginPwd"
-            autocomplete="off"
-            show-password
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="新密码" prop="loginPwd">
-          <el-input
-            type="password"
-            v-model="ruleForm.loginPwd"
+            v-model="ruleForm.password"
             autocomplete="off"
             show-password
           ></el-input>
@@ -44,7 +37,7 @@
           <el-button type="primary" @click="submitForm('ruleForm')"
             >修改</el-button
           >
-          <el-button @click="resetForm('ruleForm')">返回</el-button>
+          <el-button @click="resetForm('ruleForm')">清空</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -61,13 +54,7 @@ export default {
         callback();
       }
     };
-    const validateOldPass = (rule, value, callback) => {
-      if (value === "") {
-        callback(new Error("请输入旧密码"));
-      } else {
-        callback();
-      }
-    };
+
     const validatePass = (rule, value, callback) => {
       if (value === "") {
         callback(new Error("请输入密码"));
@@ -81,7 +68,7 @@ export default {
     const validatePass2 = (rule, value, callback) => {
       if (value === "") {
         callback(new Error("请再次输入密码"));
-      } else if (value !== this.ruleForm.loginPwd) {
+      } else if (value !== this.ruleForm.password) {
         callback(new Error("两次输入密码不一致!"));
       } else {
         callback();
@@ -90,35 +77,36 @@ export default {
     return {
       ruleForm: {
         name: "",
-        oldLoginPwd: "",
-        loginPwd: "",
+        password: "",
         checkPass: "",
+        tel: "",
+        id: "",
       },
       rules: {
         name: [{ validator: valideteUser, trigger: "blur" }],
-        oldLoginPwd: [{ validator: validateOldPass, trigger: "blur" }],
-        loginPwd: [{ validator: validatePass, trigger: "blur" }],
+        password: [{ validator: validatePass, trigger: "blur" }],
         checkPass: [{ validator: validatePass2, trigger: "blur" }],
       },
     };
+  },
+  created() {
+    if (sessionStorage.getItem("adminInfo")) {
+      const { name, tel, id } = JSON.parse(sessionStorage.getItem("adminInfo"));
+      this.ruleForm.name = name;
+      this.ruleForm.tel = tel;
+      this.ruleForm.id = id;
+    }
   },
   methods: {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          let obj = {
-            name: "",
-            loginId: "admin",
-            loginPwd: "",
-            oldLoginPwd: "",
-          };
-          obj = { ...obj, ...this.ruleForm };
+          const obj = { ...this.ruleForm };
           delete obj.checkPass;
-          updataInfo(obj).then(async (data) => {
-            if (typeof data === "string") {
-              this.$message.error("密码有误请重新输入");
-              this.ruleForm.oldLoginPwd = "";
-              this.ruleForm.loginPwd = "";
+          updataInfo(obj).then(async ({ code }) => {
+            if (code !== 0) {
+              this.$message.error("非管理员无法修改密码");
+              this.ruleForm.password = "";
               this.ruleForm.checkPass = "";
               return false;
             } else {

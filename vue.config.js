@@ -37,17 +37,31 @@ module.exports = {
       errors: true,
     },
     proxy: {
-      "/res": {
-        target: "http://47.96.229.53:7001",
+      "/user": {
+        target: "http://api.t333.com:3722",
       },
-      "/api": {
-        target: "http://47.96.229.53:7001",
+      "/client": {
+        target: "http://api.t333.com:3722",
       },
-      "/static": {
-        target: "http://47.96.229.53:7001",
+      "/clientAuthorizationCode": {
+        target: "http://api.t333.com:3722",
+      },
+      "/procedure": {
+        target: "http://api.t333.com:3722",
+      },
+      "/clientProcedureUpdateLog": {
+        target: "http://api.t333.com:3722",
+      },
+      "/deviceAuthorizationCode": {
+        target: "http://api.t333.com:3722",
+      },
+      "/userRole": {
+        target: "http://api.t333.com:3722",
+      },
+      "/facilityConfig": {
+        target: "http://api.t333.com:3722",
       },
     },
-    // before: require('./mock/mock-server.js')
   },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that

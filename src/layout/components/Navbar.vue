@@ -11,6 +11,9 @@
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
+          <div class="name">
+            用户 : <span>{{ user.name }}</span>
+          </div>
           <img
             src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif"
             class="user-avatar"
@@ -41,7 +44,7 @@ export default {
     Hamburger,
   },
   computed: {
-    ...mapGetters(["sidebar", "avatar"]),
+    ...mapGetters(["sidebar", "avatar", "user"]),
   },
   methods: {
     toggleSideBar() {
@@ -113,7 +116,14 @@ export default {
       .avatar-wrapper {
         margin-top: 5px;
         position: relative;
-
+        display: flex;
+        .name {
+          margin-right: 10px;
+          margin-top: -5px;
+          span {
+            font-weight: 800;
+          }
+        }
         .user-avatar {
           cursor: pointer;
           width: 40px;

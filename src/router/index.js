@@ -52,7 +52,7 @@ export const constantRoutes = [
         path: "dashboard",
         name: "Dashboard",
         component: () => import("@/views/dashboard/index"),
-        meta: { title: "控制台", icon: "dashboard", auth: true },
+        meta: { title: "授权码", icon: "dashboard", auth: true },
       },
     ],
   },
@@ -65,152 +65,193 @@ export const constantRoutes = [
         name: "PersonalSetting",
         component: () => import("@/views/personalSetting/index"),
         hidden: true,
-        meta: { title: "个人中心", icon: "dashboard" },
+        meta: { title: "个人中心", icon: "dashboard", auth: true },
       },
     ],
   },
-
   {
-    path: "/banner",
+    path: "/client",
     component: Layout,
-    children: [
-      {
-        path: "index",
-        name: "Banner",
-        component: () => import("@/views/banner/index"),
-        meta: { title: "首页标语", icon: "el-icon-s-home", auth: true },
-      },
-    ],
-  },
-
-  {
-    path: "/blog",
-    component: Layout,
-    redirect: "/blog/list",
-    name: "Blog",
-    meta: { title: "文章管理", icon: "el-icon-document" },
+    redirect: "/client/list",
+    name: "Client",
+    meta: { title: "客户管理", icon: "el-icon-user-solid" },
     children: [
       {
         path: "list",
         name: "List",
-        component: () => import("@/views/blogList/index"),
-        meta: { title: "文章列表", icon: "el-icon-tickets", auth: true },
+        component: () => import("@/views/clientList/index"),
+        meta: { title: "客户列表", icon: "el-icon-s-custom", auth: true },
       },
       {
-        path: "type",
-        name: "Type",
-        component: () => import("@/views/blogType/index"),
-        meta: { title: "文章分类", icon: "el-icon-menu", auth: true },
-      },
-      {
-        path: "add",
-        name: "Add",
-        component: () => import("@/views/blogAdd/index"),
-        meta: {
-          title: "添加文章",
-          icon: " el-icon-circle-plus-outline",
-          auth: true,
-        },
-      },
-      {
-        path: "edit/:id",
-        name: "Edit",
-        component: () => import("@/views/editBlog/index"),
-        hidden: true,
-        meta: {
-          title: "编辑文章",
-          icon: "el-icon-tickets",
-          auth: true,
-        },
+        path: "info/:id",
+        name: "Info",
+        component: () => import("@/views/clientInfo/index"),
+        meta: { title: "客户设备列表", icon: "el-icon-cpu", auth: true },
       },
     ],
   },
-
   {
-    path: "/project",
+    path: "/upload",
     component: Layout,
-    redirect: "/project/list",
-    name: "Project",
-    meta: { title: "项目管理", icon: "el-icon-document" },
+    redirect: "/upload/list",
+    name: "Client",
+    meta: { title: "升级管理", icon: "el-icon-user-solid" },
     children: [
       {
         path: "list",
         name: "List",
-        component: () => import("@/views/projectList/index"),
-        meta: { title: "项目列表", icon: "el-icon-notebook-1", auth: true },
+        component: () => import("@/views/uploadList/index"),
+        meta: { title: "升级列表", icon: "el-icon-s-custom", auth: true },
       },
-      {
-        path: "add",
-        name: "Add",
-        component: () => import("@/views/projectAdd/index"),
-        meta: { title: "添加项目", icon: "el-icon-link", auth: true },
-      },
+      // {
+      //   path: "info/:id",
+      //   name: "Info",
+      //   component: () => import("@/views/clientInfo/index"),
+      //   meta: { title: "客户设备列表", icon: "el-icon-cpu", auth: true },
+      // },
     ],
   },
   {
-    path: "/comment",
+    path: "/userSetting",
     component: Layout,
     children: [
       {
         path: "index",
-        name: "Comment",
-        component: () => import("@/views/comment/index"),
-        meta: {
-          title: "评论管理",
-          icon: "el-icon-chat-line-round",
-          auth: true,
-        },
+        name: "UserSetting",
+        component: () => import("@/views/userSetting/index"),
+        meta: { title: "用户设置", icon: "el-icon-s-home", auth: true },
       },
     ],
   },
-  {
-    path: "/message",
-    component: Layout,
-    children: [
-      {
-        path: "index",
-        name: "Message",
-        component: () => import("@/views/message/index"),
-        meta: {
-          title: "留言板",
-          icon: "el-icon-copy-document",
-          auth: true,
-        },
-      },
-    ],
-  },
-  {
-    path: "/about",
-    component: Layout,
-    children: [
-      {
-        path: "index",
-        name: "About",
-        component: () => import("@/views/about/index"),
-        meta: {
-          title: "关于我",
-          icon: "el-icon-s-custom",
-          auth: true,
-        },
-      },
-    ],
-  },
-  {
-    path: "/setting",
-    component: Layout,
-    children: [
-      {
-        path: "index",
-        name: "Setting",
-        component: () => import("@/views/setting/index"),
-        meta: {
-          title: "设置",
-          icon: "el-icon-s-tools",
-          auth: true,
-        },
-      },
-    ],
-  },
+
+  // {
+  //   path: "/blog",
+  //   component: Layout,
+  //   redirect: "/blog/list",
+  //   name: "Blog",
+  //   meta: { title: "文章管理", icon: "el-icon-document" },
+  //   children: [
+  //     {
+  //       path: "list",
+  //       name: "List",
+  //       component: () => import("@/views/blogList/index"),
+  //       meta: { title: "文章列表", icon: "el-icon-tickets", auth: true },
+  //     },
+  //     {
+  //       path: "type",
+  //       name: "Type",
+  //       component: () => import("@/views/blogType/index"),
+  //       meta: { title: "文章分类", icon: "el-icon-menu", auth: true },
+  //     },
+  //     {
+  //       path: "add",
+  //       name: "Add",
+  //       component: () => import("@/views/blogAdd/index"),
+  //       meta: {
+  //         title: "添加文章",
+  //         icon: " el-icon-circle-plus-outline",
+  //         auth: true,
+  //       },
+  //     },
+  //     {
+  //       path: "edit/:id",
+  //       name: "Edit",
+  //       component: () => import("@/views/editBlog/index"),
+  //       hidden: true,
+  //       meta: {
+  //         title: "编辑文章",
+  //         icon: "el-icon-tickets",
+  //         auth: true,
+  //       },
+  //     },
+  //   ],
+  // },
+
+  // {
+  //   path: "/project",
+  //   component: Layout,
+  //   redirect: "/project/list",
+  //   name: "Project",
+  //   meta: { title: "项目管理", icon: "el-icon-document" },
+  //   children: [
+  //     {
+  //       path: "list",
+  //       name: "List",
+  //       component: () => import("@/views/projectList/index"),
+  //       meta: { title: "项目列表", icon: "el-icon-notebook-1", auth: true },
+  //     },
+  //     {
+  //       path: "add",
+  //       name: "Add",
+  //       component: () => import("@/views/projectAdd/index"),
+  //       meta: { title: "添加项目", icon: "el-icon-link", auth: true },
+  //     },
+  //   ],
+  // },
+  // {
+  //   path: "/comment",
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: "index",
+  //       name: "Comment",
+  //       component: () => import("@/views/comment/index"),
+  //       meta: {
+  //         title: "评论管理",
+  //         icon: "el-icon-chat-line-round",
+  //         auth: true,
+  //       },
+  //     },
+  //   ],
+  // },
+  // {
+  //   path: "/message",
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: "index",
+  //       name: "Message",
+  //       component: () => import("@/views/message/index"),
+  //       meta: {
+  //         title: "留言板",
+  //         icon: "el-icon-copy-document",
+  //         auth: true,
+  //       },
+  //     },
+  //   ],
+  // },
+  // {
+  //   path: "/about",
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: "index",
+  //       name: "About",
+  //       component: () => import("@/views/about/index"),
+  //       meta: {
+  //         title: "关于我",
+  //         icon: "el-icon-s-custom",
+  //         auth: true,
+  //       },
+  //     },
+  //   ],
+  // },
+  // {
+  //   path: "/setting",
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: "index",
+  //       name: "Setting",
+  //       component: () => import("@/views/setting/index"),
+  //       meta: {
+  //         title: "设置",
+  //         icon: "el-icon-s-tools",
+  //         auth: true,
+  //       },
+  //     },
+  //   ],
+  // },
 
   // 404 page must be placed at the end !!!
   { path: "*", redirect: "/404", hidden: true },

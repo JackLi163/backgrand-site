@@ -1,7 +1,7 @@
 import axios from "axios";
-import { MessageBox, Message } from "element-ui";
-import store from "@/store";
-import { getToken } from "@/utils/auth";
+import { Message } from "element-ui";
+// import store from "@/store";
+// import { getToken } from "@/utils/auth";
 
 // create an axios instance
 const service = axios.create({
@@ -13,8 +13,7 @@ const service = axios.create({
 // request interceptor
 service.interceptors.request.use(
   (config) => {
-    config.headers.Authorization =
-      "Bearer " + localStorage.getItem("adminToken");
+    config.headers.Authorization = sessionStorage.getItem("adminToken");
     return config;
   },
   (error) => {
@@ -37,8 +36,14 @@ service.interceptors.response.use(
    * You can also judge the status by HTTP Status Code
    */
   (response) => {
-    if (response.headers.authentication) {
-      localStorage.setItem("adminToken", response.headers.authentication);
+    if (response.data.code === 0) {
+      if (response.data.data && response.data.data.token) {
+        sessionStorage.setItem("adminToken", response.data.data.token);
+        sessionStorage.setItem(
+          "adminInfo",
+          JSON.stringify(response.data.data.user)
+        );
+      }
     }
     return response.data;
 

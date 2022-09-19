@@ -1,34 +1,58 @@
 <template>
   <div class="upload-container">
-    <div class="block">{{ uploadTitle }}</div>
     <el-upload
-      class="avatar-uploader"
-      action="/api/upload"
-      :show-file-list="false"
+      class="avatar-uploade"
+      :multiple="true"
+      action="http://upload.qiniup.com"
+      :data="postData"
       :on-success="handleAvatarSuccess"
-      :headers="headers"
     >
-      <img v-if="value" :src="value" class="avatar" />
-      <i v-else class="el-icon-plus avatar-uploader-icon el-upload"></i>
+      <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+      <i v-else class="el-icon-plus avatar-uploader-icon"></i>
     </el-upload>
   </div>
 </template>
 
 <script>
+import { genUpToken } from "@/utils/qiniuToken";
 export default {
-  props: ["uploadTitle", "value"],
-  computed: {
-    headers() {
-      return { Authorization: "Bearer " + localStorage.getItem("adminToken") };
-    },
+  data() {
+    return {
+      imageUrl: "",
+      postData: {},
+    };
   },
+  created() {
+    var token;
+    var policy = {};
+    var bucketName = "wisconsin-hawk";
+    var AK = "ZncTnLcIxG_0nGFrUXK4aQruVA_srum_nHrpCprV";
+    var SK = "BcSZpMiLWOadmUgH5uSbrcz0sw_S_7e2DGHpzwLU";
+    var deadline = Math.round(new Date().getTime() / 1000) + 3600;
+    policy.scope = bucketName;
+    policy.deadline = deadline;
+    token = genUpToken(AK, SK, policy);
+    this.postData.token = token;
+  },
+
   methods: {
-    // 图片上传后的回调函数，参数为服务器传回来的数值
-    handleAvatarSuccess(res) {
-      if (!res.code && res.data) {
-        this.$emit("input", res.data);
-      }
+    handleAvatarSuccess(res, file) {
+      // this.imageUrl = URL.createObjectURL(file.raw);
+      this.imageUrl = "http://qny.westhawk.cn/" + res.key;
+      console.log(this.imageUrl);
     },
+    // beforeAvatarUpload(file) {
+    //   const isJPG = file.type === "image/jpeg";
+    //   const isLt2M = file.size / 1024 / 1024 < 2;
+
+    //   if (!isJPG) {
+    //     this.$message.error("上传头像图片只能是 JPG 格式!");
+    //   }
+    //   if (!isLt2M) {
+    //     this.$message.error("上传头像图片大小不能超过 2MB!");
+    //   }
+    //   return isJPG && isLt2M;
+    // },
   },
 };
 </script>
